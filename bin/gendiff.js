@@ -6,7 +6,8 @@ program
   .version('1.0.0');
 
 program
-  .option('-F, -f, --format [type]', 'output format', 'stylish')
-  .helpOption('-H, -h, --help', 'output usage information');
+  .option('-f, --format [type]', 'output format')
+  .arguments('<filepath1> <filepath2>')
+  .helpOption('-h, --help', 'output usage information');
 
 program.parse(process.argv);

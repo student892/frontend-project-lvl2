@@ -22,6 +22,7 @@
   "homepage": "https://github.com/student892/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^6.2.1",
+    "fs-js": "^1.0.6",
     "lodash": "^4.17.20"
   },
   "devDependencies": {

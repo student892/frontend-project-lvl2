@@ -16,6 +16,6 @@ const genDiff = (filepath1, filepath2) => {
 
   const result = compareFiles(data1, data2);
 
-  return JSON.stringify(result);
+  return result;
 };
 export default genDiff;

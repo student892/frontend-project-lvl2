@@ -1,17 +1,20 @@
 import fs from 'fs';
-import path, { dirname } from 'path';
+import path from 'path';
 import { fileURLToPath } from 'url';
+import { expect, test } from '@jest/globals';
 import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-test('test json files', () => {
-  const expectedResult = readFile(getFixturePath('diffs.txt'));
+test('json files', () => {
+  const expectedResult = readFile('diffs.txt');
   const file1Path = getFixturePath('file1.json');
   const file2Path = getFixturePath('file2.json');
-  expect(genDiff(file1Path, file2Path)).toEqual(expectedResult);
+  const diffs = genDiff(file1Path, file2Path);
+  expect(typeof diffs).toEqual('string');
+  expect(diffs).toEqual(expectedResult);
 });

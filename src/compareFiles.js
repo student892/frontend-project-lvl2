@@ -12,20 +12,20 @@ const compareFiles = (data1, data2) => {
     const data2Value = data2[current];
 
     if (hasData1 && !hasData2) {
-      acc.push(`- ${current}: ${data1[current]}`);
+      acc.push(` - ${current}: ${data1[current]}`);
     }
 
     if (!hasData1 && hasData2) {
-      acc.push(`+ ${current}: ${data2[current]}`);
+      acc.push(` + ${current}: ${data2[current]}`);
     }
 
     if (hasData1 && hasData2 && data1Value === data2Value) {
-      acc.push(`  ${current}: ${data1[current]}`);
+      acc.push(`   ${current}: ${data1[current]}`);
     }
 
     if (hasData1 && hasData2 && data1Value !== data2Value) {
-      acc.push(`- ${current}: ${data1[current]}`);
-      acc.push(`+ ${current}: ${data2[current]}`);
+      acc.push(` - ${current}: ${data1[current]}`);
+      acc.push(` + ${current}: ${data2[current]}`);
     }
 
     return acc;

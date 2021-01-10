@@ -7,3 +7,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 ### GitHub Actions
 [![Eslint](https://github.com/student892/frontend-project-lvl2/workflows/eslint/badge.svg)](https://github.com/student892/frontend-project-lvl2/actions)
+[![Eslint](https://github.com/student892/frontend-project-lvl2/workflows/jest/badge.svg)](https://github.com/student892/frontend-project-lvl2/actions)

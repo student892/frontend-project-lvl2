@@ -18,3 +18,12 @@ test('json files', () => {
   expect(typeof diffs).toEqual('string');
   expect(diffs).toEqual(expectedResult);
 });
+
+test('yml files', () => {
+  const expectedResult = readFile('diffs.txt');
+  const file1Path = getFixturePath('file1.yml');
+  const file2Path = getFixturePath('file2.yml');
+  const diffs = genDiff(file1Path, file2Path);
+  expect(typeof diffs).toEqual('string');
+  expect(diffs).toEqual(expectedResult);
+});

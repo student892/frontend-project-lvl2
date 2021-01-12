@@ -10,27 +10,44 @@ const compareFiles = (data1, data2) => {
     const hasData2 = _.has(data2, current);
     const data1Value = data1[current];
     const data2Value = data2[current];
+    const isObjectValue1 = _.isPlainObject(data1Value);
+    const isObjectValue2 = _.isPlainObject(data2Value);
 
-    if (hasData1 && !hasData2) {
-      acc.push(` - ${current}: ${data1[current]}`);
+    if (!hasData2) {
+      const descriptObject = { key: current, value: data1Value, status: 'deleted' };
+      acc.push(descriptObject);
     }
 
-    if (!hasData1 && hasData2) {
-      acc.push(` + ${current}: ${data2[current]}`);
+    if (!hasData1) {
+      const descriptObject = { key: current, value: data2Value, status: 'added' };
+      acc.push(descriptObject);
     }
 
-    if (hasData1 && hasData2 && data1Value === data2Value) {
-      acc.push(`   ${current}: ${data1[current]}`);
+    if (data1Value === data2Value) {
+      const descriptObject = { key: current, value: data1Value, status: 'unchanged' };
+      acc.push(descriptObject);
+    }
+
+    if (isObjectValue1 && isObjectValue2) {
+      const children = compareFiles(data1Value, data2Value);
+      const descriptObject = {
+        key: current,
+        value: 'nested',
+        status: 'changed',
+        children,
+      };
+      acc.push(descriptObject);
+      return acc;
     }
 
     if (hasData1 && hasData2 && data1Value !== data2Value) {
-      acc.push(` - ${current}: ${data1[current]}`);
-      acc.push(` + ${current}: ${data2[current]}`);
+      const descriptObject = { key: current, value: data1Value, status: 'changed' };
+      acc.push(descriptObject);
     }
 
     return acc;
   }, []);
 
-  return `{\n ${differencies.join('\n ')}\n}`;
+  return JSON.stringify(differencies, null, '  ');
 };
 export default compareFiles;

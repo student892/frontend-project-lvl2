@@ -33,7 +33,7 @@ const compareFiles = (data1, data2) => {
       const descriptObject = {
         key: current,
         value: 'nested',
-        status: 'changed',
+        status: 'nested',
         children,
       };
       acc.push(descriptObject);
@@ -41,13 +41,18 @@ const compareFiles = (data1, data2) => {
     }
 
     if (hasData1 && hasData2 && data1Value !== data2Value) {
-      const descriptObject = { key: current, value: data1Value, status: 'changed' };
+      const descriptObject = {
+        key: current,
+        value: data1Value,
+        status: 'changed',
+        newValue: data2Value,
+      };
       acc.push(descriptObject);
     }
 
     return acc;
   }, []);
 
-  return JSON.stringify(differencies, null, '  ');
+  return differencies;
 };
 export default compareFiles;

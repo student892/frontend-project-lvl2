@@ -1,7 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import genDiff from './index.js';
-import stylish from './src/formatters/stylish.js';
+import stylish from './src/stylish.js';
 
 /*
 const readFile = (filename) => fs.readFileSync(path.join('./', filename), 'utf-8');

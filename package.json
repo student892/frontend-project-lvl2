@@ -6,7 +6,8 @@
     "testEnvironment": "node",
     "transform": {}
   },
-  "description": "[![Actions Status](https://github.com/student892/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/student892/frontend-project-lvl2/actions)",
+  "engines" : { "node" : ">=14" },
+  "description": "Compares two configuration files and shows a difference.",
   "main": "index.js",
   "scripts": {
     "test": "npx jest"

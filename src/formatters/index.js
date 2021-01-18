@@ -3,6 +3,13 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 
 const chooseFormat = (format, diffTree) => {
+  switch (format) {
+    case 'plain': return plain(diffTree);
+    case 'stylish': return stylish(diffTree);
+    case 'json': return json(diffTree);
+    default: throw new Error(`unknown format ${format}`);
+  }
+  /*
   if (format === 'plain') {
     return plain(diffTree);
   }
@@ -13,5 +20,6 @@ const chooseFormat = (format, diffTree) => {
     return json(diffTree);
   }
   throw new Error('unknown format');
+  */
 };
 export default chooseFormat;

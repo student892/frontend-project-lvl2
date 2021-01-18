@@ -67,18 +67,3 @@ const stylish = (tree) => {
   return iter(tree, initialDepth);
 };
 export default stylish;
-
-/*
-const obj1 = {
-  group3: {
-    fee: 100500,
-    deep: {
-      id: {
-        number: 45,
-      },
-    },
-  },
-};
-const str = makeString(obj1, 1);
-console.log(str);
-*/

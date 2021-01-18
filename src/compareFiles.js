@@ -1,9 +1,7 @@
 import _ from 'lodash';
 
 const compareFiles = (data1, data2) => {
-  const data1Keys = Object.keys(data1);
-  const data2Keys = Object.keys(data2);
-  const joinedKeys = _.uniq([...data1Keys, ...data2Keys]).sort();
+  const joinedKeys = Object.keys({ ...data1, ...data2 }).sort();
 
   const differencies = joinedKeys.reduce((acc, current) => {
     const hasData1 = _.has(data1, current);

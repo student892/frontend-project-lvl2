@@ -10,9 +10,6 @@ const chooseFormat = (format, diffTree) => {
     default: throw new Error(`unknown format ${format}`);
   }
   /*
-  if (format === 'plain') {
-    return plain(diffTree);
-  }
   if (format === 'stylish') {
     return stylish(diffTree);
   }

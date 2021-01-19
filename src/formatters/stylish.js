@@ -12,8 +12,8 @@ const makeString = (value, depth) => {
   const objectValues = Object.entries(value);
   const innerStr = objectValues.reduce((acc, current) => {
     const [innerKey, innerValue] = current;
-    acc.push(`${indentSize}${innerKey}: ${makeString(innerValue, depth + 1)}`);
-    return acc;
+    const childObj = `${indentSize}${innerKey}: ${makeString(innerValue, depth + 1)}`;
+    return [...acc, childObj];
   }, []);
   const joinedStr = innerStr.join('\n');
   const result = `{\n${joinedStr}\n${finalIndent}}`;
@@ -35,29 +35,23 @@ const stylish = (tree) => {
       const newCurrentValue = current.newValue;
       if (currentStatus === 'deleted') {
         const currentStr = `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        acc.push(currentStr);
-        return acc;
+        return [...acc, currentStr];
       }
       if (currentStatus === 'added') {
         const currentStr = `${currentIndent}+ ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        acc.push(currentStr);
-        return acc;
+        return [...acc, currentStr];
       }
       if (currentStatus === 'changed') {
         const currentStr1 = `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        acc.push(currentStr1);
         const currentStr2 = `${currentIndent}+ ${currentKey}: ${makeString(newCurrentValue, depth + 1)}`;
-        acc.push(currentStr2);
-        return acc;
+        return [...acc, currentStr1, currentStr2];
       }
       if (currentStatus === 'nested') {
         const currentStr = [`${currentIndent}  ${currentKey}: `, iter(currentChildren, depth + 1)].join('');
-        acc.push(currentStr);
-        return acc;
+        return [...acc, currentStr];
       }
       const currentStr = `${currentIndent}  ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-      acc.push(currentStr);
-      return acc;
+      return [...acc, currentStr];
     }, []);
     const joinedStr = reduced.join('\n');
     const result = `{\n${joinedStr}\n${finalIndent}}`;

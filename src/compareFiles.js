@@ -1,9 +1,10 @@
 import _ from 'lodash';
 
 const compareFiles = (data1, data2) => {
-  const joinedKeys = Object.keys({ ...data1, ...data2 }).sort();
+  const joinedKeys = Object.keys({ ...data1, ...data2 });
+  const sortedKeys = _.sortBy(joinedKeys);
 
-  const differencies = joinedKeys.reduce((acc, current) => {
+  const differencies = sortedKeys.reduce((acc, current) => {
     const hasData1 = _.has(data1, current);
     const hasData2 = _.has(data2, current);
     const data1Value = data1[current];
@@ -13,17 +14,17 @@ const compareFiles = (data1, data2) => {
 
     if (!hasData2) {
       const descriptObject = { key: current, value: data1Value, status: 'deleted' };
-      acc.push(descriptObject);
+      return [...acc, descriptObject];
     }
 
     if (!hasData1) {
       const descriptObject = { key: current, value: data2Value, status: 'added' };
-      acc.push(descriptObject);
+      return [...acc, descriptObject];
     }
 
     if (data1Value === data2Value) {
       const descriptObject = { key: current, value: data1Value, status: 'unchanged' };
-      acc.push(descriptObject);
+      return [...acc, descriptObject];
     }
 
     if (isObjectValue1 && isObjectValue2) {
@@ -34,8 +35,7 @@ const compareFiles = (data1, data2) => {
         status: 'nested',
         children,
       };
-      acc.push(descriptObject);
-      return acc;
+      return [...acc, descriptObject];
     }
 
     if (hasData1 && hasData2 && data1Value !== data2Value) {
@@ -45,7 +45,7 @@ const compareFiles = (data1, data2) => {
         status: 'changed',
         newValue: data2Value,
       };
-      acc.push(descriptObject);
+      return [...acc, descriptObject];
     }
 
     return acc;

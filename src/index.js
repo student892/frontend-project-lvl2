@@ -6,12 +6,12 @@ import format from './formatters/index.js';
 
 const getFullPath = (filepath) => path.resolve(filepath);
 const getFormat = (filepath) => {
-  const formatName = path.extname(filepath);
-  switch (formatName) {
+  const ext = path.extname(filepath);
+  switch (ext) {
     case '.json': return 'json';
     case '.yml': return 'yaml';
     case '.yaml': return 'yaml';
-    default: throw new Error(`unknown format: ${format}`);
+    default: throw new Error(`unknown format: ${ext}`);
   }
 };
 

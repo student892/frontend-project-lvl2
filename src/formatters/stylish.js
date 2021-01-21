@@ -27,33 +27,29 @@ const stylish = (tree) => {
     const indent = ' ';
     const currentIndent = indent.repeat(depth * indentNumber - 2);
     const finalIndent = indent.repeat(depth * indentNumber - 4);
-    const reduced = innerTree.reduce((acc, current) => {
+    const mapped = innerTree.flatMap((current) => {
       const currentKey = current.key;
       const currentValue = current.value;
-      const currentStatus = current.status;
+      const currentType = current.type;
       const currentChildren = current.children;
       const newCurrentValue = current.newValue;
-      if (currentStatus === 'deleted') {
-        const currentStr = `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        return [...acc, currentStr];
+
+      switch (currentType) {
+        case 'deleted':
+          return `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+        case 'added':
+          return `${currentIndent}+ ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+        case 'changed':
+          return [`${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`,
+            `${currentIndent}+ ${currentKey}: ${makeString(newCurrentValue, depth + 1)}`];
+        case 'nested':
+          return [`${currentIndent}  ${currentKey}: `, iter(currentChildren, depth + 1)].join('');
+        case 'unchanged':
+          return `${currentIndent}  ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+        default: throw new Error(`unknown format: ${currentType}`);
       }
-      if (currentStatus === 'added') {
-        const currentStr = `${currentIndent}+ ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        return [...acc, currentStr];
-      }
-      if (currentStatus === 'changed') {
-        const currentStr1 = `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-        const currentStr2 = `${currentIndent}+ ${currentKey}: ${makeString(newCurrentValue, depth + 1)}`;
-        return [...acc, currentStr1, currentStr2];
-      }
-      if (currentStatus === 'nested') {
-        const currentStr = [`${currentIndent}  ${currentKey}: `, iter(currentChildren, depth + 1)].join('');
-        return [...acc, currentStr];
-      }
-      const currentStr = `${currentIndent}  ${currentKey}: ${makeString(currentValue, depth + 1)}`;
-      return [...acc, currentStr];
-    }, []);
-    const joinedStr = reduced.join('\n');
+    });
+    const joinedStr = mapped.join('\n');
     const result = `{\n${joinedStr}\n${finalIndent}}`;
     return result;
   };

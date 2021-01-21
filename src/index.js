@@ -1,20 +1,21 @@
 import path from 'path';
 import fs from 'fs';
-import compareFiles from './compareFiles.js';
+import compareData from './compareFiles.js';
 import parseData from './parsers.js';
-import chooseFormat from './formatters/index.js';
+import format from './formatters/index.js';
 
 const getFullPath = (filepath) => path.resolve(filepath);
 const getFormat = (filepath) => {
-  const format = path.extname(filepath);
-  switch (format) {
+  const formatName = path.extname(filepath);
+  switch (formatName) {
     case '.json': return 'json';
     case '.yml': return 'yaml';
+    case '.yaml': return 'yaml';
     default: throw new Error(`unknown format: ${format}`);
   }
 };
 
-const genDiff = (filepath1, filepath2, format = 'stylish') => {
+const genDiff = (filepath1, filepath2, formatter = 'stylish') => {
   const fullPath1 = getFullPath(filepath1);
   const fullPath2 = getFullPath(filepath2);
 
@@ -27,8 +28,8 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const parsedData1 = parseData(data1, format1);
   const parsedData2 = parseData(data2, format2);
 
-  const diffs = compareFiles(parsedData1, parsedData2);
-  const result = chooseFormat(format, diffs);
+  const diffs = compareData(parsedData1, parsedData2);
+  const result = format(formatter, diffs);
 
   return result;
 };

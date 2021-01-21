@@ -19,27 +19,20 @@ const plain = (tree) => {
       const currentNewValue = current.newValue;
       const value = formatValue(currentValue);
       const newValue = formatValue(currentNewValue);
-      const currentStatus = current.status;
+      const currentType = current.type;
       const currentChildren = current.children;
       const currentPath = `${objPaths}${currentKey}`;
-      if (currentStatus === 'deleted') {
-        const innerStr = `Property '${currentPath}' was removed`;
-        return innerStr;
+
+      switch (currentType) {
+        case 'deleted': return `Property '${currentPath}' was removed`;
+        case 'added': return `Property '${currentPath}' was added with value: ${value}`;
+        case 'changed': return `Property '${currentPath}' was updated. From ${value} to ${newValue}`;
+        case 'nested': return iter(currentChildren, `${currentPath}.`);
+        case 'unchanged': return [];
+        default: throw new Error(`unknown format: ${currentType}`);
       }
-      if (currentStatus === 'added') {
-        const innerStr = `Property '${currentPath}' was added with value: ${value}`;
-        return innerStr;
-      }
-      if (currentStatus === 'changed') {
-        const innerStr = `Property '${currentPath}' was updated. From ${value} to ${newValue}`;
-        return innerStr;
-      }
-      if (currentStatus === 'nested') {
-        return iter(currentChildren, `${currentPath}.`);
-      }
-      return 'unchanged';
     });
-    return changesList.filter((element) => element !== 'unchanged').join('\n');
+    return changesList.join('\n');
   };
   return iter(tree, '');
 };

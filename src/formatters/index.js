@@ -9,14 +9,5 @@ const chooseFormat = (format, diffTree) => {
     case 'json': return json(diffTree);
     default: throw new Error(`unknown format ${format}`);
   }
-  /*
-  if (format === 'stylish') {
-    return stylish(diffTree);
-  }
-  if (format === 'json') {
-    return json(diffTree);
-  }
-  throw new Error('unknown format');
-  */
 };
 export default chooseFormat;

@@ -7,9 +7,12 @@
 [![Eslint](https://github.com/student892/frontend-project-lvl2/workflows/eslint/badge.svg)](https://github.com/student892/frontend-project-lvl2/actions)
 [![Eslint](https://github.com/student892/frontend-project-lvl2/workflows/jest/badge.svg)](https://github.com/student892/frontend-project-lvl2/actions)
 ### Installation
-```$ make install```
+```
+$ make install
+```
 ### Usage
-```gendiff [options] <filepath1> <filepath2>
+```
+gendiff [options] <filepath1> <filepath2>
 
 Options:
   -V, --version        output the version number

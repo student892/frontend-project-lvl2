@@ -12,16 +12,15 @@ const formatValue = (value) => {
 };
 
 const plain = (tree) => {
-  const iter = (innerTree, objPaths) => {
-    const changesList = innerTree.flatMap((current) => {
-      const currentKey = current.key;
-      const currentValue = current.value;
-      const currentNewValue = current.newValue;
+  const iter = (innerTree, ancestry) => {
+    const changesList = innerTree.flatMap((node) => {
+      const currentKey = node.key;
+      const currentValue = node.value;
       const value = formatValue(currentValue);
-      const newValue = formatValue(currentNewValue);
-      const currentType = current.type;
-      const currentChildren = current.children;
-      const currentPath = `${objPaths}${currentKey}`;
+      const newValue = formatValue(node.newValue);
+      const currentType = node.type;
+      const currentChildren = node.children;
+      const currentPath = `${ancestry}${currentKey}`;
 
       switch (currentType) {
         case 'deleted': return `Property '${currentPath}' was removed`;

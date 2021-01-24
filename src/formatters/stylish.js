@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const makeString = (value, depth) => {
+const formatValue = (value, depth) => {
   const isObjectValue = _.isPlainObject(value);
   if (!isObjectValue) {
     return value;
@@ -10,11 +10,11 @@ const makeString = (value, depth) => {
   const indentSize = indent.repeat(depth * indentNumber);
   const finalIndent = indent.repeat(depth * indentNumber - indentNumber);
   const objectValues = Object.entries(value);
-  const innerStr = objectValues.reduce((acc, current) => {
+  const innerStr = objectValues.map((current) => {
     const [innerKey, innerValue] = current;
-    const childObj = `${indentSize}${innerKey}: ${makeString(innerValue, depth + 1)}`;
-    return [...acc, childObj];
-  }, []);
+    const childObj = `${indentSize}${innerKey}: ${formatValue(innerValue, depth + 1)}`;
+    return childObj;
+  });
   const joinedStr = innerStr.join('\n');
   const result = `{\n${joinedStr}\n${finalIndent}}`;
   return result;
@@ -36,16 +36,16 @@ const stylish = (tree) => {
 
       switch (currentType) {
         case 'deleted':
-          return `${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+          return `${currentIndent}- ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
         case 'added':
-          return `${currentIndent}+ ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+          return `${currentIndent}+ ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
         case 'changed':
-          return [`${currentIndent}- ${currentKey}: ${makeString(currentValue, depth + 1)}`,
-            `${currentIndent}+ ${currentKey}: ${makeString(newCurrentValue, depth + 1)}`];
+          return [`${currentIndent}- ${currentKey}: ${formatValue(currentValue, depth + 1)}`,
+            `${currentIndent}+ ${currentKey}: ${formatValue(newCurrentValue, depth + 1)}`];
         case 'nested':
           return [`${currentIndent}  ${currentKey}: `, iter(currentChildren, depth + 1)].join('');
         case 'unchanged':
-          return `${currentIndent}  ${currentKey}: ${makeString(currentValue, depth + 1)}`;
+          return `${currentIndent}  ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
         default: throw new Error(`unknown format: ${currentType}`);
       }
     });

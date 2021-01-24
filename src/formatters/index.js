@@ -2,7 +2,7 @@ import json from './json.js';
 import plain from './plain.js';
 import stylish from './stylish.js';
 
-const chooseFormat = (format, diffTree) => {
+const chooseFormat = (diffTree, format) => {
   switch (format) {
     case 'plain': return plain(diffTree);
     case 'stylish': return stylish(diffTree);

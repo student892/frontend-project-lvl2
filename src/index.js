@@ -29,7 +29,7 @@ const genDiff = (filepath1, filepath2, formatter = 'stylish') => {
   const parsedData2 = parseData(data2, format2);
 
   const diffs = compareData(parsedData1, parsedData2);
-  const result = format(formatter, diffs);
+  const result = format(diffs, formatter);
 
   return result;
 };

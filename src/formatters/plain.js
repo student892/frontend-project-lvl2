@@ -14,21 +14,18 @@ const formatValue = (value) => {
 const plain = (tree) => {
   const iter = (innerTree, ancestry) => {
     const changesList = innerTree.flatMap((node) => {
-      const currentKey = node.key;
-      const currentValue = node.value;
-      const value = formatValue(currentValue);
+      const value = formatValue(node.value);
       const newValue = formatValue(node.newValue);
-      const currentType = node.type;
-      const currentChildren = node.children;
-      const currentPath = `${ancestry}${currentKey}`;
+      const { type, key, children } = node;
+      const path = `${ancestry}${key}`;
 
-      switch (currentType) {
-        case 'deleted': return `Property '${currentPath}' was removed`;
-        case 'added': return `Property '${currentPath}' was added with value: ${value}`;
-        case 'changed': return `Property '${currentPath}' was updated. From ${value} to ${newValue}`;
-        case 'nested': return iter(currentChildren, `${currentPath}.`);
+      switch (type) {
+        case 'deleted': return `Property '${path}' was removed`;
+        case 'added': return `Property '${path}' was added with value: ${value}`;
+        case 'changed': return `Property '${path}' was updated. From ${value} to ${newValue}`;
+        case 'nested': return iter(children, `${path}.`);
         case 'unchanged': return [];
-        default: throw new Error(`unknown format: ${currentType}`);
+        default: throw new Error(`unknown format: ${type}`);
       }
     });
     return changesList.join('\n');

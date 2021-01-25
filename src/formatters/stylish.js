@@ -27,26 +27,28 @@ const stylish = (tree) => {
     const indent = ' ';
     const currentIndent = indent.repeat(depth * indentNumber - 2);
     const finalIndent = indent.repeat(depth * indentNumber - 4);
-    const mapped = innerTree.flatMap((current) => {
-      const currentKey = current.key;
-      const currentValue = current.value;
-      const currentType = current.type;
-      const currentChildren = current.children;
-      const newCurrentValue = current.newValue;
+    const mapped = innerTree.flatMap((node) => {
+      const {
+        key,
+        value,
+        type,
+        children,
+        newValue,
+      } = node;
 
-      switch (currentType) {
+      switch (type) {
         case 'deleted':
-          return `${currentIndent}- ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
+          return `${currentIndent}- ${key}: ${formatValue(value, depth + 1)}`;
         case 'added':
-          return `${currentIndent}+ ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
+          return `${currentIndent}+ ${key}: ${formatValue(value, depth + 1)}`;
         case 'changed':
-          return [`${currentIndent}- ${currentKey}: ${formatValue(currentValue, depth + 1)}`,
-            `${currentIndent}+ ${currentKey}: ${formatValue(newCurrentValue, depth + 1)}`];
+          return [`${currentIndent}- ${key}: ${formatValue(value, depth + 1)}`,
+            `${currentIndent}+ ${key}: ${formatValue(newValue, depth + 1)}`];
         case 'nested':
-          return [`${currentIndent}  ${currentKey}: `, iter(currentChildren, depth + 1)].join('');
+          return [`${currentIndent}  ${key}: `, iter(children, depth + 1)].join('');
         case 'unchanged':
-          return `${currentIndent}  ${currentKey}: ${formatValue(currentValue, depth + 1)}`;
-        default: throw new Error(`unknown format: ${currentType}`);
+          return `${currentIndent}  ${key}: ${formatValue(value, depth + 1)}`;
+        default: throw new Error(`unknown format: ${type}`);
       }
     });
     const joinedStr = mapped.join('\n');
